@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>¿Serás mi San Valentín? 💖</title>
+
+  <style>
+    :root{
+      --pink-1:#ffd6e8;
+      --pink-2:#ffb3d9;
+      --pink-3:#ff69b4;
+      --pink-4:#ff3f9a;
+      --ink:#7a1f4b;
+      --card:#ffffffea;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, "Comic Sans MS", "Trebuchet MS", Arial, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1000px 600px at 20% 10%, #fff 0%, transparent 60%),
+        radial-gradient(900px 700px at 80% 30%, #fff 0%, transparent 55%),
+        linear-gradient(135deg, var(--pink-1), var(--pink-2));
+      overflow:hidden;
+      padding:24px;
+    }
+
+    /* corazones flotando de fondo */
+    .bg-hearts{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.28;
+      filter:saturate(1.2);
+    }
+    .bg-hearts span{
+      position:absolute;
+      font-size: clamp(18px, 3vw, 34px);
+      animation: floatUp linear infinite;
+      transform: translateY(120vh);
+    }
+    @keyframes floatUp{
+      from{ transform: translateY(120vh) rotate(0deg); }
+      to{ transform: translateY(-20vh) rotate(360deg); }
+    }
+
+    .card{
+      width:min(520px, 100%);
+      background:var(--card);
+      border: 3px solid #ff9fcb;
+      border-radius:28px;
+      box-shadow: 0 18px 50px rgba(255, 73, 154, .25);
+      padding:28px 22px;
+      text-align:center;
+      position:relative;
+      backdrop-filter: blur(6px);
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:#fff;
+      border: 2px dashed #ff9fcb;
+      font-weight:700;
+    }
+
+    .heart{
+      display:inline-block;
+      font-size:42px;
+      animation: beat 1s infinite;
+      filter: drop-shadow(0 6px 10px rgba(255, 105, 180, .25));
+    }
+    @keyframes beat{
+      0%,100%{ transform: scale(1); }
+      50%{ transform: scale(1.18); }
+    }
+
+    h1{
+      margin:16px 0 8px;
+      font-size: clamp(24px, 4vw, 34px);
+      color: var(--pink-4);
+      line-height:1.12;
+    }
+    p{
+      margin: 0 auto 16px;
+      max-width: 42ch;
+      font-size: 16px;
+      opacity:.9;
+    }
+
+    .arena{
+      margin:18px auto 10px;
+      width:min(420px, 100%);
+      height: 170px;
+      position:relative;
+      border-radius:22px;
+      background:
+        radial-gradient(closest-side at 30% 30%, #fff 0, #ffe2f0 60%, #ffd0e6 100%);
+      border: 2px solid #ffb8d8;
+      overflow:hidden;
+    }
+
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      border-radius:18px;
+      padding: 14px 18px;
+      font-size: 18px;
+      font-weight: 800;
+      transition: transform .15s ease, filter .15s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      box-shadow: 0 10px 18px rgba(255, 105, 180, .28);
+    }
+    .btn:active{ transform: translateY(1px) scale(.98); }
+
+    #yesBtn{
+      background: linear-gradient(180deg, #ff88c7, var(--pink-3));
+      color:white;
+      position:absolute;
+      left: 14%;
+      top: 55%;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #noBtn{
+      background: #ffe0ef;
+      color: var(--pink-4);
+      border: 2px solid #ff9fcb;
+      position:absolute;
+      left: 72%;
+      top: 55%;
+      transform: translate(-50%, -50%);
+    }
+
+    .note{
+      font-size: 13px;
+      opacity:.75;
+      margin-top:8px;
+    }
+
+    .final{
+      display:none;
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background:#fff;
+      border:2px solid #ffb8d8;
+      font-weight: 800;
+      color: var(--pink-4);
+    }
+
+    .confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      display:none;
+    }
+    .confetti i{
+      position:absolute;
+      font-style:normal;
+      font-size:18px;
+      animation: pop 1.2s ease-out forwards;
+    }
+    @keyframes pop{
+      0%{ transform: translateY(0) scale(.8); opacity:0; }
+      15%{ opacity:1; }
+      100%{ transform: translateY(140px) scale(1.15); opacity:0; }
+    }
+
+    .small{
+      font-size: 12px;
+      opacity:.7;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Fondo de corazones -->
+  <div class="bg-hearts" aria-hidden="true" id="bgHearts"></div>
+
+  <div class="card">
+    <div class="badge">
+      <span class="heart">💖</span>
+      <span>Modo: súper cute</span>
+    </div>
+
+    <h1>¿Quieres ser mi San Valentín? 🥺💘</h1>
+    <p>Prometo abrazos infinitos, besitos sorpresa y muchos momentos bonitos contigo.</p>
+
+    <div class="arena" id="arena">
+      <button class="btn" id="yesBtn">SÍ 💕</button>
+      <button class="btn" id="noBtn" type="button">NO 😭</button>
+    </div>
+
+    <div class="note">Tip: si intentas decir “NO”… el universo conspira para que digas “SÍ” 😌✨</div>
+
+    <div class="final" id="finalMsg">
+      ¡SABÍA QUE DIRÍAS QUE SÍ! 😭💗<br/>
+      Te quiero muchísimo. ¿Cuándo es nuestra cita? 💌
+      <div class="small">(Ahora puedes hacer captura y mandársela 😄)</div>
+    </div>
+  </div>
+
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+  <script>
+    const arena = document.getElementById("arena");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn  = document.getElementById("noBtn");
+    const finalMsg = document.getElementById("finalMsg");
+    const confetti = document.getElementById("confetti");
+    const bgHearts = document.getElementById("bgHearts");
+
+    // Fondo: corazones flotando
+    const hearts = ["💗","💖","💘","💝","💕","💞"];
+    for (let i=0; i<18; i++){
+      const s = document.createElement("span");
+      s.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+      s.style.left = Math.random()*100 + "vw";
+      s.style.animationDuration = (6 + Math.random()*8) + "s";
+      s.style.animationDelay = (-Math.random()*12) + "s";
+      bgHearts.appendChild(s);
+    }
+
+    let yesScale = 1;
+
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+    function moveNoButton(){
+      const rect = arena.getBoundingClientRect();
+
+      // tamaño aproximado del botón NO
+      const bw = noBtn.offsetWidth;
+      const bh = noBtn.offsetHeight;
+
+      // área segura dentro del contenedor
+      const padding = 14;
+
+      const x = Math.random() * (rect.width  - bw - padding*2) + padding;
+      const y = Math.random() * (rect.height - bh - padding*2) + padding;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+      noBtn.style.transform = "translate(0,0)";
+    }
+
+    function growYes(){
+      yesScale = clamp(yesScale + 0.18, 1, 2.2);
+      yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+      yesBtn.style.filter = "brightness(1.03)";
+      setTimeout(()=> yesBtn.style.filter = "", 120);
+    }
+
+    // Hacer el NO "imposible": huye con mouse y con toque
+    noBtn.addEventListener("mouseenter", () => { growYes(); moveNoButton(); });
+    noBtn.addEventListener("mouseover",  () => { growYes(); moveNoButton(); });
+
+    // En móvil: cuando intentan tocarlo, se mueve antes del click
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      growYes();
+      moveNoButton();
+    }, { passive:false });
+
+    // Por si llegaran a hacer click (muy raro), lo anulamos
+    noBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      growYes();
+      moveNoButton();
+    });
+
+    // Cuando dice SÍ: mostrar mensaje + confetti de corazoncitos
+    function throwConfetti(){
+      confetti.style.display = "block";
+      confetti.innerHTML = "";
+      const emojis = ["💖","💗","💘","💕","💝","✨"];
+
+      for (let i=0; i<40; i++){
+        const el = document.createElement("i");
+        el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        el.style.left = (Math.random()*100) + "vw";
+        el.style.top = (Math.random()*25) + "vh";
+        el.style.animationDelay = (Math.random()*0.25) + "s";
+        confetti.appendChild(el);
+      }
+
+      setTimeout(()=> { confetti.style.display = "none"; }, 1400);
+    }
+
+    yesBtn.addEventListener("click", () => {
+      finalMsg.style.display = "block";
+      throwConfetti();
+      // bloquear NO para que ya no tenga sentido después del SÍ
+      noBtn.disabled = true;
+      noBtn.style.opacity = 0.55;
+      noBtn.style.cursor = "not-allowed";
+    });
+
+    // Posición inicial bonita del NO (por si el navegador cambia tamaños)
+    window.addEventListener("load", () => {
+      // Ajusta el "translate" inicial del YES
+      yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+    });
+  </script>
+</body>
+</html>
